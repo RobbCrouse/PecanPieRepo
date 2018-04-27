@@ -1,0 +1,67 @@
+
+@model pecanpie.Models.Game
+
+<h1>Dojo Activity Center</h1>
+<p><a asp-controller="Game" asp-action="Dashboard" >Home</a><span>   |   </span><a asp-controller="Home" asp-action="LogOut">Log off</a></p>
+<hr>
+<br>
+
+
+
+
+<h2>@Model.Title
+
+
+
+    @foreach( var rev in @ViewBag.ThisParticularGame )
+    {
+        @if( @ViewBag.LoggedId == @rev.CreatedById)
+        {
+            <a asp-controller="Game" asp-action="DeleteGame" asp-route-id="@rev.GameId">Delete</a>
+        }
+        else
+        {
+            bool signedUp = false;
+            @foreach( var plan in @rev.Joiners)
+            {
+                if( @plan.User != null )
+                {
+                    if(( int ) @plan.User.UserId == ( int ) @ViewBag.LoggedId )
+                    {
+                        signedUp = true;
+                    }
+                }
+            }
+            @if( signedUp == false )
+            {
+                <a asp-controller="Game" asp-action="JoinGameGroup" asp-route-id="@rev.GameId">Join</a>
+            }
+            else
+            {
+                <a asp-controller="Game" asp-action="LeaveGameGroup" asp-route-id="@rev.GameId">Leave</a>
+            }
+
+        }
+    }
+
+</h2>
+
+
+
+<h3>Event Coordinator:  @Model.CreatedBy.FirstName</h3>
+<br>
+<h3>Description:</h3>
+<p>@Model.Description</p>
+
+
+<h3>Participants:</h3>
+<table>
+    
+    @foreach( var rev in @Model.Joiners )
+    {
+            <p>@rev.User.FirstName</p>
+
+    }
+
+      
+</table>

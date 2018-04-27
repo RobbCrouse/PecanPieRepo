@@ -1,0 +1,71 @@
+@model List<pecanpie.Models.Game>
+
+
+<h1>Dojo Activity Center</h1>
+
+<p>Welcome @ViewBag.RetrievedUser.FirstName!<span>   |   </span><a asp-controller="Home" asp-action="LogOut">Log off</a></p>
+
+
+
+<table>
+    <tr>
+        <th>Activity</th>
+        <th>Date and Time</th>
+        <th>Duration</th>
+        <th>Event<br>Coordinator</th>
+        <th>Number of<br>Participants</th>
+        <th>Actions</th>
+    </tr>
+        @foreach( var rev in Model )
+        {
+            <tr>
+                <td><a asp-controller="Game" asp-action="ShowDetails" asp-route-id="@rev.GameId">@rev.Title</a></td>
+                <td>@rev.Date.Date.ToString("MMM dd yyyy") &#64 @rev.Time.ToString("h:mm tt")</td>
+                <td>@rev.Duration<span>  </span>@rev.TimeSpan</td>
+                <td>@rev.CreatedBy.FirstName</td>
+                <td>@rev.Joiners.Count</td>
+                
+                <td>
+                    @if( @ViewBag.LoggedId == @rev.CreatedById)
+                    {
+                        <a asp-controller="Game" asp-action="DeleteGame" asp-route-id="@rev.GameId">Delete</a>
+                    }
+                    else
+                    {
+                        bool signedUp = false;
+                        @foreach( var plan in @rev.Joiners)
+                        {
+                            if( @plan.User != null )
+                            {
+                                if(( int ) @plan.User.UserId == ( int ) @ViewBag.LoggedId )
+                                {
+                                    signedUp = true;
+                                }
+                            }
+                        }
+                        @if( signedUp == false )
+                        {
+                            <a asp-controller="Game" asp-action="JoinGameGroup" asp-route-id="@rev.GameId">Join</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Game" asp-action="LeaveGameGroup" asp-route-id="@rev.GameId">Leave</a>
+                        }
+
+                    }
+
+                </td>
+                
+            </tr>
+        }
+</table>
+
+
+
+
+
+
+
+<h4>
+    <a asp-controller="Game" asp-action="AddNewGamePage" ><button type="submit" >Add New Activity!</button></a>
+</h4>

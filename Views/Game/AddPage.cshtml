@@ -1,0 +1,56 @@
+@using pecanpie.Models
+@model pecanpie.Models.GameViewModel
+
+<h1>Dojo Activity Center</h1>
+<p><a asp-controller="Home" asp-action="Dashboard">Home</a><span>   |   </span><a asp-controller="Home" asp-action="LogOut">Log off</a></p>
+<hr>
+
+<h3>Create an Activity!</h3>
+<br>
+<div asp-validation-summary="All"></div>
+
+
+
+<form asp-controller="Game" asp-action="CreateGameForm" method="Post">
+    
+
+    <label asp-for="Title"></label>
+    <input asp-for="Title"/>
+    <br>
+
+
+    <label asp-for="Time"></label>
+    <input asp-for="Time"/>
+    <br>
+
+
+    <label asp-for="Date"></label>
+    <input asp-for="Date"/>
+    <br>
+
+
+    <label asp-for="Duration"></label>
+    <input asp-for="Duration"/>
+    <br>
+
+
+    <p>
+        <label for="TimeSpan"></label>
+            <select name="TimeSpan">
+                <option value="Minutes">Minutes</option>
+                <option value="Hours">Hours</option>
+                <option value="Days">Days</option>
+            </select>
+    </p>
+    <br>
+
+
+    <label asp-for="Description"></label>
+    <input asp-for="Description"/>
+    <br>
+
+
+
+    <button type="submit">Create Activity</button>
+
+</form>
